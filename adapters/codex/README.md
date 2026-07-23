@@ -12,17 +12,36 @@ app-server runtime and typed JSON-RPC protocol.
 
 ## Install
 
-To install just the Codex adapter by itself:
+For the complete supported composition, install NeMo Fabric with the Codex adapter
+and Codex SDK dependencies:
 
 ```bash
 pip install "nemo-fabric[codex]"
 ```
 
-To install just the Codex adapter along with the NeMo Fabric Runtime:
+If the host environment already supplies and manages a compatible Codex SDK,
+install the host-managed variant:
 
 ```bash
-pip install "nemo-fabric[codex, runtime]"
+pip install "nemo-fabric[codex-min]"
 ```
+
+The `codex-min` extra still installs the NeMo Fabric runtime and Codex adapter,
+but it does not install the Codex SDK. The host is responsible for providing a
+compatible SDK.
+
+For host-managed installs, use the dependency constraint declared by this release:
+`openai-codex==0.144.4`.
+
+To install the standalone adapter distribution without the root `nemo-fabric`
+package:
+
+```bash
+pip install nemo-fabric-adapters-codex
+```
+
+The standalone distribution contains only adapter-owned runtime dependencies
+and also requires a compatible Codex SDK in the same environment.
 
 ## Authentication
 
@@ -59,7 +78,7 @@ login. Set the endpoint in
 `models.default.settings.base_url` or `NVIDIA_FRONTIER_BASE_URL`; the adapter
 does not assume a default frontier endpoint.
 
-The adapter depends on the Codex SDK, which installs and selects its matching
+The adapter uses the Codex SDK, which installs and selects its matching
 app-server runtime. NeMo Fabric does not declare the runtime package directly or
 treat it as a user-installed command or adapter descriptor requirement.
 

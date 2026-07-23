@@ -7,49 +7,63 @@ SPDX-License-Identifier: Apache-2.0 */}
 
 ## Package Installation Method
 
-NeMo Fabric is separated into two distinct parts:
-- NeMo Fabric Runtime: This contains the core functionality of NeMo Fabric.
-- NeMo Fabric Adapters: These provide integration with agent harnesses. These need to be installed into
-  the same environment as the agent harness which may or may not be the same environment as the NeMo Fabric runtime.
+The `nemo-fabric` package installs the NeMo Fabric runtime. Harness adapters can
+run in that environment or in a separate environment with their harness
+dependencies.
 
 ### Supported Python Versions
-- Python version 3.11 - 3.14
 
-NeMo Fabric supports Python versions 3.11-3.14, however some of the integrations and adapters may have
-additional requirements. Specifically the Hermes Agent adapter doesn't support Python 3.14 yet, and the Harbor
-integration requires Python 3.12 or later.
+NeMo Fabric supports Python 3.11 through 3.14. Some integrations and adapters
+have additional requirements. The Hermes Agent adapter does not support Python
+3.14, and the Harbor integration requires Python 3.12 or later.
 
 ### Installing NeMo Fabric Runtime
 
-Install the NeMo Fabric Runtime:
+Install the NeMo Fabric runtime:
 
 ```bash
-pip install "nemo-fabric[runtime]"
+pip install nemo-fabric
 ```
 
 ### Installing the NeMo Fabric Adapters
 
-This command installs a NeMo Fabric adapter and its dependencies. Adapters
-intentionally have minimal dependencies and belong in the same environment as
-the agent harness. That environment can differ from the NeMo Fabric runtime
-environment.
-
-The following adapter extras are available:
-
-- `claude`
-- `codex`
-- `deepagents`
-- `hermes`
+Use an unsuffixed extra for the complete, supported composition of NeMo Fabric, an
+adapter, and its harness dependencies:
 
 ```bash
-pip install "nemo-fabric[<adapter_name>]"
+pip install "nemo-fabric[claude]"
+pip install "nemo-fabric[codex]"
+pip install "nemo-fabric[deepagents]"
+pip install "nemo-fabric[hermes-agent]"
 ```
 
-For example, to install the Hermes Agent adapter:
+If the host environment already supplies and manages a compatible harness, use
+the corresponding `-min` extra:
 
 ```bash
-pip install "nemo-fabric[hermes]"
+pip install "nemo-fabric[claude-min]"
+pip install "nemo-fabric[codex-min]"
+pip install "nemo-fabric[deepagents-min]"
+pip install "nemo-fabric[hermes-agent-min]"
 ```
+
+A `-min` extra still installs the NeMo Fabric runtime and adapter. It does not
+install the harness dependencies, so the host is responsible for providing
+compatible versions.
+
+To install only a standalone adapter distribution without the root
+`nemo-fabric` package, install the adapter package directly:
+
+```bash
+pip install nemo-fabric-adapters-claude
+pip install nemo-fabric-adapters-codex
+pip install nemo-fabric-adapters-deepagents
+pip install nemo-fabric-adapters-hermes
+```
+
+Standalone adapter distributions contain only adapter-owned runtime
+dependencies. Install the selected distribution in the same environment as its
+compatible harness.
 
 ### Install NeMo Relay
 

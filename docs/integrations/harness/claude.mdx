@@ -10,16 +10,33 @@ Claude Code runtime. NeMo Fabric preserves Claude's native credential precedence
 forwards only supported operating-system, configuration, and authentication
 variables plus values explicitly configured in `harness.settings.env`.
 
-The adapter pins `claude-agent-sdk==0.2.120`. The SDK owns its compatible Claude
-Code runtime unless `harness.settings.cli_path` explicitly selects another
-executable.
-
 ## Install the Adapter
 
-Install the adapter for Claude Code:
+For the complete supported composition, install NeMo Fabric with the Claude adapter
+and Claude Agent SDK dependencies:
 
 ```bash
 pip install "nemo-fabric[claude]"
+```
+
+If the host supplies and manages a compatible Claude Agent SDK, install
+`nemo-fabric[claude-min]`. This extra still installs the NeMo Fabric runtime and
+adapter but does not install the SDK:
+
+```bash
+pip install "nemo-fabric[claude-min]"
+```
+
+For host-managed installs, use the dependency constraint declared by this release:
+`claude-agent-sdk==0.2.120`.
+
+To install only the standalone adapter distribution, install
+`nemo-fabric-adapters-claude`. The standalone distribution contains only
+adapter-owned runtime dependencies and requires a compatible Claude Agent SDK
+in the same environment:
+
+```bash
+pip install nemo-fabric-adapters-claude
 ```
 
 ## Configure the Adapter

@@ -37,12 +37,19 @@ It provides:
 
 NeMo Fabric provides the following harness integrations:
 
-| Agent Harness | Package Extra |
-| --- | --- |
-| [Claude Code](docs/integrations/harness/claude.mdx) | `nemo-fabric[claude]` |
-| [Codex](docs/integrations/harness/codex.mdx) | `nemo-fabric[codex]` |
-| [Hermes Agent](docs/integrations/harness/hermes.mdx) | `nemo-fabric[hermes]` |
-| [LangChain Deep Agents](docs/integrations/harness/deepagents.mdx) | `nemo-fabric[deepagents]` |
+| Agent Harness | Complete Extra | Host-Managed Harness Extra |
+| --- | --- | --- |
+| [Claude Code](docs/integrations/harness/claude.mdx) | `nemo-fabric[claude]` | `nemo-fabric[claude-min]` |
+| [Codex](docs/integrations/harness/codex.mdx) | `nemo-fabric[codex]` | `nemo-fabric[codex-min]` |
+| [Hermes Agent](docs/integrations/harness/hermes.mdx) | `nemo-fabric[hermes-agent]` | `nemo-fabric[hermes-agent-min]` |
+| [LangChain Deep Agents](docs/integrations/harness/deepagents.mdx) | `nemo-fabric[deepagents]` | `nemo-fabric[deepagents-min]` |
+
+Use the unsuffixed extra for the complete, supported composition of NeMo Fabric,
+the adapter, and its harness dependencies. Use the corresponding `-min` extra
+only when the host environment supplies and manages a compatible harness. A
+`-min` extra still installs the NeMo Fabric runtime and adapter. To install only
+the standalone adapter distribution, install its
+`nemo-fabric-adapters-<adapter>` package directly.
 
 Capabilities vary by harness. Review the compatibility matrix and use plan()
 and doctor() before relying on optional capabilities such as MCP, skills,
@@ -68,7 +75,7 @@ Create and activate a virtual environment, then install the required packages:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install "nemo-fabric[runtime, hermes-agent]"
+pip install "nemo-fabric[hermes-agent]"
 ```
 
 ### Set the API Key
@@ -138,7 +145,7 @@ Create an environment for the NeMo Fabric runtime:
 ```bash
 python -m venv .venv-fabric
 source .venv-fabric/bin/activate
-pip install "nemo-fabric[runtime]"
+pip install nemo-fabric
 ```
 
 Create another environment for the adapter and harness. For example, install
@@ -147,11 +154,12 @@ the Hermes Agent integration:
 ```bash
 python -m venv .venv-hermes
 source .venv-hermes/bin/activate
-pip install "nemo-fabric[hermes-agent]"
+pip install "nemo-fabric-adapters-hermes==0.1.0" "hermes-agent>=0.17.0"
 ```
 
-**Note:** The `nemo-fabric[hermes-agent]` package extra installs the Hermes Agent adapter and Hermes Agent itself, to install just the adapter, use `nemo-fabric[hermes]`.
-
+The direct adapter package keeps this environment independent from the root
+`nemo-fabric` distribution. It contains only adapter-owned runtime
+dependencies, so install the compatible Hermes Agent dependency alongside it.
 
 Run NeMo Fabric from its environment and set `ADAPTER_PYTHON` to the interpreter
 that contains the adapter and harness:

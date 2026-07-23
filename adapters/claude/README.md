@@ -9,23 +9,38 @@ The `nvidia.fabric.claude` adapter uses the official Claude Agent SDK for
 Python behind NeMo Fabric's normalized invocation contract. The SDK is an
 implementation detail; consumers select the Claude harness by adapter ID.
 
-This adapter pins `claude-agent-sdk==0.2.120`. The SDK supplies its compatible
-Claude Code runtime unless `harness.settings.cli_path` explicitly selects
-another executable.
-
 ## Install
 
-To install just the Claude adapter by itself:
+For the complete supported composition, install NeMo Fabric with the Claude
+adapter and Claude Agent SDK dependencies:
 
 ```bash
 pip install "nemo-fabric[claude]"
 ```
 
-To install just the Claude adapter along with the NeMo Fabric Runtime:
+If the host environment already supplies and manages a compatible Claude Agent
+SDK, install the host-managed variant:
 
 ```bash
-pip install "nemo-fabric[claude, runtime]"
+pip install "nemo-fabric[claude-min]"
 ```
+
+The `claude-min` extra still installs the NeMo Fabric runtime and Claude
+adapter, but it does not install the Claude Agent SDK. The host is responsible
+for providing a compatible SDK.
+
+For host-managed installs, use the dependency constraint declared by this release:
+`claude-agent-sdk==0.2.120`.
+
+To install the standalone adapter distribution without the root `nemo-fabric`
+package:
+
+```bash
+pip install nemo-fabric-adapters-claude
+```
+
+The standalone distribution contains only adapter-owned runtime dependencies
+and also requires a compatible Claude Agent SDK in the same environment.
 
 ## Authentication
 
@@ -135,8 +150,8 @@ gateway has the same lifecycle as that single invocation.
 The NeMo Fabric result includes `relay_runtime.gateway_config_path`,
 `relay_runtime.gateway_log_path`, and the collected `relay_artifacts`. Relay
 startup failures return a stable adapter error and retain the gateway log for
-diagnosis. The default Claude Agent SDK dependency bundles a compatible Claude
-Code executable. An executable supplied with `cli_path` must support the Relay
+diagnosis. The Claude Agent SDK supplies a bundled Claude Code executable. An
+executable supplied with `cli_path` must support the Relay
 plugin's complete hook set, including `UserPromptExpansion`.
 
 ## Typed Configuration

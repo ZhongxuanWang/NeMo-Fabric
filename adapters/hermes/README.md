@@ -9,23 +9,37 @@ This adapter runs Hermes Agent through its Python SDK.
 
 ## Install
 
-To install just the Hermes Agent adapter by itself:
+For the complete supported composition, install NeMo Fabric with the Hermes Agent
+adapter and Hermes Agent dependencies:
 
 ```bash
-pip install "nemo-fabric[hermes]"
+pip install "nemo-fabric[hermes-agent]"
 ```
 
-To install the Hermes Agent adapter along with the NeMo Fabric Runtime:
+If the host environment already supplies and manages a compatible Hermes Agent,
+install the host-managed variant:
 
 ```bash
-pip install "nemo-fabric[hermes, runtime]"
+pip install "nemo-fabric[hermes-agent-min]"
 ```
 
-To install the Hermes Agent adapter along with a compatible version of Hermes Agent:
+The `hermes-agent-min` extra still installs the NeMo Fabric runtime and Hermes
+Agent adapter, but it does not install Hermes Agent. The host is responsible
+for providing a compatible Hermes Agent version.
+
+For host-managed installs, use the dependency constraint declared by this release:
+`hermes-agent>=0.17.0; python_version < '3.14'`.
+
+To install the standalone adapter distribution without the root `nemo-fabric`
+package:
 
 ```bash
-pip install "nemo-fabric[hermes, hermes-agent]"
+pip install nemo-fabric-adapters-hermes
 ```
+
+The standalone distribution contains only adapter-owned runtime dependencies
+and also requires a compatible Hermes Agent installation in the same
+environment.
 
 ## What It Maps
 

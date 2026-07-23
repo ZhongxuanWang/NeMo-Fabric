@@ -51,15 +51,18 @@ The resulting wheel files are placed in the `dist/` directory. Install the
 packages into a virtual environment with:
 
 ```bash
-uv pip install --find-links ./dist "nemo-fabric[runtime]"
+uv pip install --find-links ./dist nemo-fabric
 ```
 
 Adapters are distributed as optional extras. For example, install the Hermes
-Agent adapter with:
+Agent adapter and harness with:
 
 ```bash
-uv pip install --find-links ./dist "nemo-fabric[hermes]"
+uv pip install --find-links ./dist "nemo-fabric[hermes-agent]"
 ```
+
+Use `hermes-agent-min` instead when the host environment provides a compatible
+Hermes Agent installation.
 
 Refer to the [installation guide](docs/getting-started/install.mdx) for the
 complete list of adapters and installation options.

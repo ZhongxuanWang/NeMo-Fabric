@@ -13,11 +13,32 @@ telemetry.
 
 ## Install the Adapter
 
-Install the adapter and its LangChain Deep Agents dependencies in the
-environment that runs the agent harness:
+For the complete supported composition, install NeMo Fabric with the adapter and
+LangChain Deep Agents dependencies:
 
 ```bash
 pip install "nemo-fabric[deepagents]"
+```
+
+If the host supplies and manages a compatible Deep Agents stack, install
+`nemo-fabric[deepagents-min]`. This extra still installs the NeMo Fabric runtime
+and adapter but does not install the harness dependencies:
+
+```bash
+pip install "nemo-fabric[deepagents-min]"
+```
+
+For host-managed installs, use the dependency constraints declared by this release:
+`deepagents>=0.6.12,<0.7.0`, `langchain>=1.3,<2.0`, and
+`langgraph>=1.2,<2.0`.
+
+To install only the standalone adapter distribution, install
+`nemo-fabric-adapters-deepagents`. The standalone distribution contains only
+adapter-owned runtime dependencies and requires a compatible Deep Agents stack
+in the same environment:
+
+```bash
+pip install nemo-fabric-adapters-deepagents
 ```
 
 ## Configure the Adapter

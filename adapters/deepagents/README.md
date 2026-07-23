@@ -9,17 +9,39 @@ Runs a [LangChain Deep Agents](https://github.com/langchain-ai/deepagents) agent
 inside NeMo Fabric's persistent Python adapter host. One started runtime retains the
 compiled graph, checkpointer, and LangGraph thread across ordered invocations.
 
-To install just the Deep Agents adapter by itself:
+## Install
+
+For the complete supported composition, install NeMo Fabric with the Deep Agents
+adapter and harness dependencies:
 
 ```bash
 pip install "nemo-fabric[deepagents]"
 ```
 
-To install just the Deep Agents adapter along with the NeMo Fabric Runtime:
+If the host environment already supplies and manages a compatible Deep Agents
+stack, install the host-managed variant:
 
 ```bash
-pip install "nemo-fabric[deepagents, runtime]"
+pip install "nemo-fabric[deepagents-min]"
 ```
+
+The `deepagents-min` extra still installs the NeMo Fabric runtime and Deep
+Agents adapter, but it does not install the Deep Agents harness dependencies.
+The host is responsible for providing compatible versions.
+
+For host-managed installs, use the dependency constraints declared by this release:
+`deepagents>=0.6.12,<0.7.0`, `langchain>=1.3,<2.0`, and
+`langgraph>=1.2,<2.0`.
+
+To install the standalone adapter distribution without the root `nemo-fabric`
+package:
+
+```bash
+pip install nemo-fabric-adapters-deepagents
+```
+
+The standalone distribution contains only adapter-owned runtime dependencies
+and also requires a compatible Deep Agents stack in the same environment.
 
 ## Model and Authentication
 
@@ -137,12 +159,17 @@ async with await client.start_runtime(config, base_dir=BASE_DIR) as runtime:
 NeMo Relay is Deep Agents' single, SDK-native observability path — the adapter
 does not expose gateway, CLI, or plugin launch modes for this harness. Relay is
 **optional**: `nemo_relay` is imported lazily and only when telemetry is enabled,
-so the core install stays Relay-neutral at import time. Install it through Relay's
-own `deepagents` integration extra:
+so the core install stays Relay-neutral at import time. Install the Deep Agents
+harness and base Relay package through the root extras:
 
 ```bash
-pip install "nemo-fabric-adapters-deepagents[relay]"   # -> nemo-relay[deepagents]
+pip install "nemo-fabric[deepagents,relay]"
 ```
+
+The `deepagents` extra supplies the tested Deep Agents and LangGraph stack. If
+the host manages that stack, use `nemo-fabric[deepagents-min,relay]` instead.
+The standalone adapter's `relay` extra installs only the base `nemo-relay`
+package: `pip install "nemo-fabric-adapters-deepagents[relay]"`.
 
 - **Relay** (`telemetry.providers.relay`): the SDK-native integration attaches
   three complementary pieces around `create_deep_agent`, applied uniformly to

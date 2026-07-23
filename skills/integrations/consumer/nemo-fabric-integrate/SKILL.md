@@ -44,13 +44,23 @@ that stay hidden behind this boundary.
 The consumer or its execution environment owns installation; NeMo Fabric validates
 runtime assumptions but never installs harnesses or credentials at run time.
 
-- `uv pip install nemo-fabric[runtime]` (add the `harbor` extra for the Harbor integration). Refer to the
+- Install the runtime with `uv pip install nemo-fabric` (add the `harbor` extra
+  for the Harbor integration). Refer to the
   [installation guide](https://github.com/NVIDIA/NeMo-Fabric/blob/main/docs/getting-started/install.mdx).
-- Select a harness adapter — the `adapter_id` set in `HarnessConfig`, for example
-  `nvidia.fabric.hermes` — and install its extra the same way, for example
-  `pip install "nemo-fabric[hermes]"`
-  (available extras: `hermes`, `codex`, `deepagents`, `claude`), plus the
-  corresponding harness binaries and dependencies.
+- Select the harness adapter through `HarnessConfig.adapter_id`. For the
+  complete supported composition, install `nemo-fabric[claude]`,
+  `nemo-fabric[codex]`, `nemo-fabric[deepagents]`, or
+  `nemo-fabric[hermes-agent]`.
+- Use the corresponding `nemo-fabric[claude-min]`,
+  `nemo-fabric[codex-min]`, `nemo-fabric[deepagents-min]`, or
+  `nemo-fabric[hermes-agent-min]` extra only when the host supplies and manages
+  a compatible harness. A `-min` extra still installs the NeMo Fabric runtime
+  and adapter but omits the harness dependencies.
+- In a separate harness environment that must not install the root
+  `nemo-fabric` distribution, install the corresponding standalone
+  `nemo-fabric-adapters-*` package directly alongside its compatible harness.
+  Standalone adapter distributions contain only adapter-owned runtime
+  dependencies.
 - Provide model credentials through environment variables named by the config
   (`ModelConfig.api_key_env`), never as literals in code.
 - Confirm the native extension is importable; SDK calls raise

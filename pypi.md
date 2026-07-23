@@ -37,18 +37,46 @@ Install the core runtime and Python SDK:
 pip install nemo-fabric
 ```
 
-To use a supported agent harness, install its adapter extra:
+For a complete, supported adapter composition, install the corresponding
+unsuffixed extra:
 
 ```bash
 pip install "nemo-fabric[claude]"
 pip install "nemo-fabric[codex]"
 pip install "nemo-fabric[deepagents]"
-pip install "nemo-fabric[hermes]"
+pip install "nemo-fabric[hermes-agent]"
 ```
 
-NeMo Fabric supports running an agent harness in a different virtual environment than the one used to run NeMo Fabric itself. This is useful for running agents that have conflicting dependencies with NeMo Fabric or other agents.
+These extras install NeMo Fabric, the adapter, and the harness dependencies
+supported by that adapter release.
 
-The adapter must be installed into the virtual environment that the harness is installed in. For this reason adapters intentionally have minimal dependencies.
+If the host environment already supplies and manages a compatible harness, use
+the corresponding `-min` extra:
+
+```bash
+pip install "nemo-fabric[claude-min]"
+pip install "nemo-fabric[codex-min]"
+pip install "nemo-fabric[deepagents-min]"
+pip install "nemo-fabric[hermes-agent-min]"
+```
+
+A `-min` extra installs the NeMo Fabric runtime and adapter but does not install
+the harness dependencies. To install a standalone adapter distribution without
+the root `nemo-fabric` package, install the corresponding package directly:
+
+```bash
+pip install nemo-fabric-adapters-claude
+pip install nemo-fabric-adapters-codex
+pip install nemo-fabric-adapters-deepagents
+pip install nemo-fabric-adapters-hermes
+```
+
+The standalone distribution contains only adapter-owned runtime dependencies.
+Install it in the same environment as a compatible harness.
+
+NeMo Fabric supports running an agent harness in a different virtual
+environment from the NeMo Fabric runtime. This separation can isolate harnesses
+that have conflicting dependencies.
 
 ### Integrations
 
